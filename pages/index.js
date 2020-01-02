@@ -5,14 +5,11 @@ import Nav from '../components/nav';
 
 const Home = () => (
   <div>
-    <Head title="Home" />
+    <Head title="Time to Have More Fun" />
     <Nav />
 
     <div className="hero">
-      <h1 className="title">Welcome to Next!</h1>
-      <p className="description">
-        To get started, edit <code>pages/index.js</code> and save to reload.
-      </p>
+      <h1 className="title">Time to Have More Fun!</h1>
 
       <div className="row">
         <Link href="https://github.com/zeit/next.js#getting-started">

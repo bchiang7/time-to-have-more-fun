@@ -50,7 +50,7 @@ After creating an app, it should look something like:
 Routing in Next.js is based on the file system, so `./pages/index.js` maps to the `/` route and
 `./pages/about.js` would map to `/about`.
 
-The `./static` directory maps to `/static` in the `next` server, so you can put all your
+The `./public` directory maps to `/` in the `next` server, so you can put all your
 other static resources like images or compiled CSS in there.
 
 Out of the box, we get:
@@ -58,7 +58,7 @@ Out of the box, we get:
 - Automatic transpilation and bundling (with webpack and babel)
 - Hot code reloading
 - Server rendering and indexing of `./pages`
-- Static file serving. `./static/` is mapped to `/static/`
+- Static file serving. `./public/` is mapped to `/`
 
 Read more about [Next's Routing](https://github.com/zeit/next.js#routing)
 
