@@ -1,39 +1,40 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { db, snapshotToArray } from '../utils';
+import PlaceCard from './PlaceCard';
 
-const BeenThere = () => (
-  <section className="py-10">
-    <h2 className="mb-5">Places we've been</h2>
+const BeenThere = () => {
+  const [places, setPlaces] = useState([]);
 
-    <div className="flex mb-4">
-      <div className="w-1/3">
-        <div className="max-w-sm rounded overflow-hidden shadow-lg">
-          <img
-            className="w-full"
-            src="https://tailwindcss.com/img/card-top.jpg"
-            alt="Sunset in the mountains"
-          />
-          <div className="px-6 py-4">
-            <div className="font-bold text-xl mb-2">The Coldest Sunset</div>
-            <p className="text-gray-700 text-base">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla!
-              Maiores et perferendis eaque, exercitationem praesentium nihil.
-            </p>
-          </div>
-          <div className="px-6 py-4">
-            <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
-              #photography
-            </span>
-            <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
-              #travel
-            </span>
-            <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">
-              #winter
-            </span>
-          </div>
-        </div>
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const querySnapshot = await db
+          .collection('places')
+          .where('visited', '==', true)
+          .get();
+        const placesArr = snapshotToArray(querySnapshot);
+        setPlaces(placesArr);
+      } catch (e) {
+        console.error('📣: fetchData -> e', e);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  return (
+    <section className="py-10">
+      <h2 className="mb-8">Places we've been</h2>
+
+      <div>
+        {places.length > 0 ? (
+          places.map((place, i) => <PlaceCard place={place} key={i} />)
+        ) : (
+          <p className="text-base">Haven't been anywhere yet...</p>
+        )}
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default BeenThere;
