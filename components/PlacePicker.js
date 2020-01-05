@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { db, snapshotToArray } from '../utils';
+import { getAllTags } from '../utils';
 
 const PlacePicker = () => {
   const [tags, setTags] = useState([]);
@@ -7,8 +7,7 @@ const PlacePicker = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const querySnapshot = await db.collection('tags').get();
-        const tagsArr = snapshotToArray(querySnapshot);
+        const tagsArr = await getAllTags();
         setTags(tagsArr);
       } catch (e) {
         console.error('📣: fetchData -> e', e);
@@ -17,10 +16,10 @@ const PlacePicker = () => {
 
     fetchData();
   }, []);
+
   return (
     <section className="py-10">
       <h2 className="mb-5">Can't decide where to go?</h2>
-      <p>Select tags</p>
 
       {tags &&
         tags.length > 0 &&

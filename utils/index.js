@@ -19,4 +19,14 @@ const db = firebase.firestore();
 
 const snapshotToArray = querySnapshot => querySnapshot.docs.map(doc => doc.data());
 
-export { db, snapshotToArray };
+const getAllTags = async () => {
+  try {
+    const querySnapshot = await db.collection('tags').get();
+    const tags = snapshotToArray(querySnapshot);
+    return tags;
+  } catch (e) {
+    console.error('📣: getAllTags -> e', e);
+  }
+};
+
+export { db, snapshotToArray, getAllTags };

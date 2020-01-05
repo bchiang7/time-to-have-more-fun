@@ -11,11 +11,10 @@ const Home = () => (
     <Head title="Time to Have More Fun" />
 
     <div className="container mx-auto">
-      <header className="py-20">
+      <header className="py-20 flex justify-between items-center">
         <h1 className="font-bold">Time to Have More Fun!</h1>
+        <AddPlace />
       </header>
-
-      <AddPlace />
 
       <PlacePicker />
 
