@@ -210,6 +210,7 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
                           name={tag.id}
                           onChange={handleChange}
                           value="tag"
+                          defaultChecked={inputs.tags.includes(tag.id)}
                         />
                         <span className="ml-2 capitalize">{tag.name}</span>
                       </label>
