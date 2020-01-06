@@ -1,3 +1,4 @@
+import EventBus from './EventBus';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
@@ -50,4 +51,4 @@ const addPlace = async place => {
   }
 };
 
-export { db, snapshotToArray, getAllTags, addPlace };
+export { EventBus, db, snapshotToArray, getAllTags, addPlace };

@@ -1,28 +1,71 @@
-import React from 'react';
+import React, { useState } from 'react';
 // import Link from 'next/link';
 import Head from '../components/head';
 import PlacePicker from '../components/PlacePicker';
 import WantToGo from '../components/WantToGo';
 import BeenThere from '../components/BeenThere';
-import AddPlace from '../components/AddPlace';
+import PlaceForm from '../components/PlaceForm';
 
-const Home = () => (
-  <div>
-    <Head title="Time to Have More Fun" />
+import { EventBus } from '../utils';
 
-    <div className="container mx-auto">
-      <header className="py-20 flex justify-between items-center">
-        <h1 className="font-bold">Time to Have More Fun!</h1>
-        <AddPlace />
-      </header>
+const defaultPlace = {
+  name: '',
+  description: '',
+  img: '',
+  visited: 'No',
+  visitedDate: '',
+  tags: [],
+};
 
-      <PlacePicker />
+const Home = () => {
+  const [isModalShown, setIsModalShown] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
-      <WantToGo />
+  const [placeToEdit, setPlaceToEdit] = useState(defaultPlace);
 
-      <BeenThere />
+  const openModal = (place = defaultPlace) => {
+    document.body.classList.add('freeze');
+    setPlaceToEdit(place);
+    setIsModalShown(true);
+  };
+
+  const closeModal = () => {
+    document.body.classList.remove('freeze');
+    setIsModalShown(false);
+  };
+
+  EventBus.on('editPlace', place => {
+    setIsEditing(true);
+    openModal(place);
+  });
+
+  return (
+    <div>
+      <Head title="Time to Have More Fun" />
+
+      <div className="container mx-auto">
+        <header className="py-20 flex justify-between items-center">
+          <h1 className="font-bold">Time to Have More Fun!</h1>
+
+          <button
+            className="inline-flex items-center bg-teal-500 hover:bg-teal-400 focus:outline-none focus:bg-teal-400 px-6 py-3 rounded-lg text-white font-small tracking-wide"
+            onClick={openModal}>
+            Add Place
+          </button>
+        </header>
+
+        {isModalShown && (
+          <PlaceForm closeModal={closeModal} isEditing={isEditing} placeToEdit={placeToEdit} />
+        )}
+
+        <PlacePicker />
+
+        <WantToGo />
+
+        <BeenThere />
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default Home;
