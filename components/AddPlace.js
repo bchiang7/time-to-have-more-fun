@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { getAllTags } from '../utils';
+import { getAllTags, addPlace } from '../utils';
 
 const AddPlace = () => {
   const [tags, setTags] = useState([]);
   const [isModalShown, setIsModalShown] = useState(false);
+  const [inputs, setInputs] = useState({
+    name: '',
+    description: '',
+    img: '',
+    visited: 'No',
+    visitedDate: '',
+    tags: [],
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,10 +27,12 @@ const AddPlace = () => {
   }, []);
 
   const openModal = () => {
+    document.body.classList.add('freeze');
     setIsModalShown(true);
   };
 
   const closeModal = () => {
+    document.body.classList.remove('freeze');
     setIsModalShown(false);
   };
 
@@ -32,8 +42,28 @@ const AddPlace = () => {
     }
   };
 
-  const submit = () => {
-    console.warn('submit');
+  const handleChange = e => {
+    e.persist();
+    setInputs(inputs => {
+      const { name, value, checked } = e.target;
+
+      if (value !== 'tag') {
+        return { ...inputs, [name]: value };
+      }
+
+      // Handle tag checkboxes
+      const tags = checked ? [...inputs.tags, name] : [...inputs.tags.filter(t => t === name)];
+
+      return { ...inputs, tags };
+    });
+  };
+
+  const onSubmit = async e => {
+    e.preventDefault();
+
+    await addPlace(inputs);
+
+    closeModal();
   };
 
   return (
@@ -45,20 +75,20 @@ const AddPlace = () => {
       </button>
 
       {isModalShown && (
-        <div className="modal absolute w-full h-full top-0 left-0 flex items-center justify-center">
+        <div className="modal absolute w-full h-full top-0 left-0 flex items-center justify-center z-10">
           <div
-            className="modal-overlay absolute w-full h-full bg-black opacity-25 top-0 left-0 cursor-pointer"
+            className="modal-overlay absolute w-full h-full bg-black opacity-25 top-0 left-0"
             onClick={closeModal}
             onKeyDown={handleKeyDown}
             role="button"
             tabIndex="0"></div>
 
           <div className="absolute bg-white rounded-sm shadow-lg flex items-center justify-center w-9/12 max-w-2xl">
-            <form className="w-full p-10">
+            <form className="w-full p-10" onSubmit={onSubmit}>
               <h2 className="mb-10 flex justify-between">
                 Add a place
                 <button
-                  className="rounded-full h-12 w-12 flex items-center justify-center hover:bg-gray-200 text-2xl"
+                  className="rounded-full h-12 w-12 flex items-center justify-center hover:bg-gray-200 text-2xl -mr-4 leading-none pb-1"
                   onClick={closeModal}>
                   &times;
                 </button>
@@ -68,14 +98,16 @@ const AddPlace = () => {
                 <div className="w-full px-3 mb-6 md:mb-0">
                   <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                    htmlFor="place-name">
+                    htmlFor="name">
                     Name
                   </label>
                   <input
+                    id="name"
+                    name="name"
                     className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="place-name"
                     type="text"
                     placeholder="Budapest"
+                    onChange={handleChange}
                   />
                 </div>
               </div>
@@ -83,14 +115,16 @@ const AddPlace = () => {
                 <div className="w-full px-3 mb-6 md:mb-0">
                   <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                    htmlFor="place-description">
+                    htmlFor="description">
                     Description
                   </label>
                   <textarea
-                    id="place-description"
+                    id="description"
+                    name="description"
                     className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     rows="3"
-                    placeholder="We want to go here"></textarea>
+                    placeholder="We want to go here"
+                    onChange={handleChange}></textarea>
                 </div>
               </div>
 
@@ -98,14 +132,16 @@ const AddPlace = () => {
                 <div className="w-full px-3 mb-6 md:mb-0">
                   <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                    htmlFor="place-image">
+                    htmlFor="img">
                     Image URL
                   </label>
                   <input
+                    id="img"
+                    name="img"
                     className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="place-image"
                     type="url"
                     placeholder="https://images.unsplash.com/photo-abc123"
+                    onChange={handleChange}
                   />
                 </div>
               </div>
@@ -114,15 +150,18 @@ const AddPlace = () => {
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                   <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                    htmlFor="grid-state">
+                    htmlFor="visited">
                     Been there?
                   </label>
                   <div className="relative">
                     <select
+                      id="visited"
+                      name="visited"
                       className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="grid-state">
-                      <option>Yes</option>
-                      <option>No</option>
+                      defaultValue="No"
+                      onBlur={handleChange}>
+                      <option value="Yes">Yes</option>
+                      <option value="No">No</option>
                     </select>
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                       <svg
@@ -137,14 +176,16 @@ const AddPlace = () => {
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                   <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                    htmlFor="grid-zip">
+                    htmlFor="visitedDate">
                     Visited Date
                   </label>
                   <input
+                    id="visitedDate"
+                    name="visitedDate"
                     className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="grid-zip"
                     type="text"
                     placeholder="1/1/2020"
+                    onChange={handleChange}
                   />
                 </div>
               </div>
@@ -160,7 +201,13 @@ const AddPlace = () => {
                       tags.map(tag => (
                         <div key={tag.name} className="w-1/3">
                           <label className="inline-flex items-center text-gray-700">
-                            <input type="checkbox" className="form-checkbox" />
+                            <input
+                              type="checkbox"
+                              className="form-checkbox"
+                              name={tag.id}
+                              onChange={handleChange}
+                              value="tag"
+                            />
                             <span className="ml-2 capitalize">{tag.name}</span>
                           </label>
                         </div>
@@ -172,7 +219,7 @@ const AddPlace = () => {
               <div className="flex justify-end">
                 <button
                   className="mt-10 inline-flex items-center bg-green-600 hover:bg-green-500 focus:outline-none focus:bg-green-500 px-6 py-3 rounded-lg text-white font-small tracking-wide"
-                  onClick={submit}>
+                  type="submit">
                   Add This Place
                 </button>
               </div>

@@ -15,3 +15,7 @@ a {
 
 @tailwind components;
 @tailwind utilities;
+
+body.freeze {
+  overflow: hidden;
+}

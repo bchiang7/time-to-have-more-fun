@@ -10,7 +10,7 @@ const BeenThere = () => {
       try {
         const querySnapshot = await db
           .collection('places')
-          .where('visited', '==', true)
+          .where('visited', '==', 'Yes')
           .get();
         const placesArr = snapshotToArray(querySnapshot);
         setPlaces(placesArr);
@@ -19,6 +19,13 @@ const BeenThere = () => {
       }
     };
 
+    db.collection('places')
+      .where('visited', '==', 'Yes')
+      .onSnapshot(querySnapshot => {
+        const placesArr = snapshotToArray(querySnapshot);
+        setPlaces(placesArr);
+      });
+
     fetchData();
   }, []);
 
@@ -26,11 +33,11 @@ const BeenThere = () => {
     <section className="py-10">
       <h2 className="mb-8">Places we've been</h2>
 
-      <div>
+      <div className="flex mb-4 -mx-3">
         {places.length > 0 ? (
           places.map((place, i) => <PlaceCard place={place} key={i} />)
         ) : (
-          <p className="text-base">Haven't been anywhere yet...</p>
+          <p className="text-base text-gray-700 p-3">Haven't been anywhere yet...</p>
         )}
       </div>
     </section>

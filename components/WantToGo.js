@@ -10,7 +10,7 @@ const WantToGo = () => {
       try {
         const querySnapshot = await db
           .collection('places')
-          .where('visited', '==', false)
+          .where('visited', '==', 'No')
           .get();
         const placesArr = snapshotToArray(querySnapshot);
         setPlaces(placesArr);
@@ -19,6 +19,13 @@ const WantToGo = () => {
       }
     };
 
+    db.collection('places')
+      .where('visited', '==', 'No')
+      .onSnapshot(querySnapshot => {
+        const placesArr = snapshotToArray(querySnapshot);
+        setPlaces(placesArr);
+      });
+
     fetchData();
   }, []);
 
@@ -26,11 +33,11 @@ const WantToGo = () => {
     <section className="py-10">
       <h2 className="mb-8">Places we want to go</h2>
 
-      <div>
+      <div className="flex mb-4 -mx-3">
         {places.length > 0 ? (
           places.map((place, i) => <PlaceCard place={place} key={i} />)
         ) : (
-          <p className="text-base">Add some places you want to go!</p>
+          <p className="text-base text-gray-700 p-3">Add some places you want to go!</p>
         )}
       </div>
     </section>

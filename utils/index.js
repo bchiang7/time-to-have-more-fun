@@ -17,7 +17,8 @@ if (!firebase.apps.length) {
 
 const db = firebase.firestore();
 
-const snapshotToArray = querySnapshot => querySnapshot.docs.map(doc => doc.data());
+const snapshotToArray = querySnapshot =>
+  querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
 const getAllTags = async () => {
   try {
@@ -29,4 +30,24 @@ const getAllTags = async () => {
   }
 };
 
-export { db, snapshotToArray, getAllTags };
+const slugify = str =>
+  str
+    .toString()
+    .toLowerCase()
+    .replace(/\s+/g, '-') // Replace spaces with -
+    .replace(/[^\w]+/g, '') // Remove all non-word chars
+    .replace(/^-+/, '') // Trim - from start of text
+    .replace(/-+$/, ''); // Trim - from end of text
+
+const addPlace = async place => {
+  try {
+    await db
+      .collection('places')
+      .doc(slugify(place.name))
+      .set(place);
+  } catch (e) {
+    console.error('📣: AddPlace -> e', e);
+  }
+};
+
+export { db, snapshotToArray, getAllTags, addPlace };

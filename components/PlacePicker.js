@@ -23,10 +23,10 @@ const PlacePicker = () => {
 
       {tags &&
         tags.length > 0 &&
-        tags.map((tag, i) => (
+        tags.map(tag => (
           <span
             className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
-            key={i}>
+            key={tag.id}>
             #{tag.name}
           </span>
         ))}
