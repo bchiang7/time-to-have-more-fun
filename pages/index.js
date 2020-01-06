@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-// import Link from 'next/link';
 import Head from '../components/head';
+import PlaceForm from '../components/PlaceForm';
 import PlacePicker from '../components/PlacePicker';
 import WantToGo from '../components/WantToGo';
 import BeenThere from '../components/BeenThere';
-import PlaceForm from '../components/PlaceForm';
-
 import { EventBus } from '../utils';
 
 const defaultPlace = {
@@ -20,7 +18,6 @@ const defaultPlace = {
 const Home = () => {
   const [isModalShown, setIsModalShown] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-
   const [placeToEdit, setPlaceToEdit] = useState(defaultPlace);
 
   const openModal = (place = defaultPlace) => {
@@ -32,6 +29,11 @@ const Home = () => {
   const closeModal = () => {
     document.body.classList.remove('freeze');
     setIsModalShown(false);
+  };
+
+  const addPlace = () => {
+    setIsEditing(false);
+    openModal();
   };
 
   EventBus.on('editPlace', place => {
@@ -49,7 +51,7 @@ const Home = () => {
 
           <button
             className="inline-flex items-center bg-teal-500 hover:bg-teal-400 focus:outline-none focus:bg-teal-400 px-6 py-3 rounded-lg text-white font-small tracking-wide"
-            onClick={openModal}>
+            onClick={addPlace}>
             Add Place
           </button>
         </header>

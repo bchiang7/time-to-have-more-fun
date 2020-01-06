@@ -9,7 +9,7 @@ const PlaceCard = ({ place }) => {
 
   return (
     <div className="w-1/3 px-3">
-      <div className="max-w-sm rounded overflow-hidden shadow-md hover:shadow-lg">
+      <div className="max-w-sm h-full rounded overflow-hidden shadow-md hover:shadow-lg">
         {place.img && (
           <div className="bg-gray-200 w-full">
             <img className="w-full" src={place.img} alt="Sunset in the mountains" />

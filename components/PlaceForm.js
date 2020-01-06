@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getAllTags, addPlace } from '../utils';
+import { getAllTags, addPlace, deletePlace } from '../utils';
 import PropTypes from 'prop-types';
 
 const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
@@ -57,8 +57,24 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
     }
   };
 
+  const onDelete = async e => {
+    e.preventDefault();
+
+    if (!window.confirm('Are you sure you want to delete this place?')) {
+      return;
+    }
+
+    try {
+      await deletePlace(inputs);
+      closeModal();
+    } catch (e) {
+      console.error('📣: PlaceForm -> e', e);
+      setIsErrorShown(true);
+    }
+  };
+
   return (
-    <div className="modal absolute w-full h-full top-0 left-0 flex items-center justify-center z-10">
+    <div className="modal w-full h-full fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-10">
       <div
         className="modal-overlay absolute w-full h-full bg-black opacity-25 top-0 left-0"
         onClick={closeModal}
@@ -69,7 +85,7 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
       <div className="absolute bg-white rounded-sm shadow-lg flex items-center justify-center w-9/12 max-w-2xl">
         <form className="w-full p-10" onSubmit={onSubmit}>
           <h2 className="mb-10 flex justify-between">
-            {isEditing ? 'Edit place' : 'Add a place'}
+            {isEditing ? 'Edit place' : 'Add a new place'}
             <button
               className="rounded-full h-12 w-12 flex items-center justify-center hover:bg-gray-200 text-2xl -mr-4 leading-none pb-1"
               onClick={closeModal}>
@@ -87,7 +103,7 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
               <input
                 id="name"
                 name="name"
-                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                className="appearance-none block w-full bg-gray-200 text-gray-700 font-bold border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 type="text"
                 placeholder="Budapest"
                 value={inputs.name}
@@ -212,11 +228,19 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
             </div>
           )}
 
-          <div className="flex justify-end">
+          <div className="flex justify-between mt-10">
+            {isEditing && (
+              <button
+                className="bg-gray-300 hover:bg-gray-400 focus:bg-gray-400 text-gray-800 focus:outline-none px-6 py-3 rounded-lg text-white font-small tracking-wide"
+                onClick={onDelete}>
+                Delete
+              </button>
+            )}
+
             <button
-              className="mt-10 inline-flex items-center bg-teal-500 hover:bg-teal-400 focus:outline-none focus:bg-teal-400 px-6 py-3 rounded-lg text-white font-small tracking-wide"
+              className="bg-teal-500 hover:bg-teal-400 focus:outline-none focus:bg-teal-400 px-6 py-3 rounded-lg text-white font-small tracking-wide"
               type="submit">
-              Add This Place
+              {isEditing ? 'Save' : 'Add'}
             </button>
           </div>
         </form>
