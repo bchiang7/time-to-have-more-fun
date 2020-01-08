@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getAllTags } from '../utils';
-import Tag from './Tag';
+import TagCheckboxes from './TagCheckboxes';
 
 const PlacePicker = () => {
   const [tags, setTags] = useState([]);
@@ -9,7 +9,13 @@ const PlacePicker = () => {
     const fetchData = async () => {
       try {
         const tagsArr = await getAllTags();
-        setTags(tagsArr);
+        const tagsMap = {};
+        const categories = Array.from(new Set(tagsArr.map(t => t.category)));
+        categories.forEach(category => {
+          tagsMap[category] = tagsArr.filter(t => t.category === category);
+        });
+
+        setTags(tagsMap);
       } catch (e) {
         console.error('📣: fetchData -> e', e);
       }
@@ -18,12 +24,16 @@ const PlacePicker = () => {
     fetchData();
   }, []);
 
+  const handleChange = e => {
+    e.persist();
+  };
+
   return (
     <section className="py-10">
-      <h2 className="text-5xl mb-5">This year we're going to...</h2>
+      <h2 className="text-4xl mb-5">This year we're going to...</h2>
 
-      <div className="py-4 flex flex-wrap items-center">
-        {tags && tags.length > 0 && tags.map(tag => <Tag tag={tag.name} key={tag.id} />)}
+      <div className="py-4 w-1/2">
+        <TagCheckboxes tagsMap={tags} handleChange={handleChange} />
       </div>
     </section>
   );

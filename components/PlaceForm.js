@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getAllTags, addPlace, deletePlace } from '../utils';
 import PropTypes from 'prop-types';
+import TagCheckboxes from './TagCheckboxes';
 
 const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
   const [tags, setTags] = useState({});
@@ -24,8 +25,6 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
     };
 
     fetchData();
-
-    document.querySelector('.modal-overlay').focus();
   }, []);
 
   const handleChange = e => {
@@ -82,15 +81,16 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
 
       <div className="relative w-full h-screen max-h-screen flex items-center justify-center">
         <div className="bg-white rounded-sm shadow-lg m-6 overflow-y-auto w-9/12 max-w-2xl modal-inner">
-          <form className="w-full p-10" onSubmit={onSubmit}>
+          <form className="w-full p-10 relative" onSubmit={onSubmit}>
             <h2 className="mb-10 flex justify-between">
               {isEditing ? 'Edit place' : 'Add a new place'}
-              <button
-                className="rounded-full h-12 w-12 flex items-center justify-center hover:bg-gray-200 text-2xl -mr-4 leading-none pb-1 focus:outline-none"
-                onClick={closeModal}>
-                &times;
-              </button>
             </h2>
+
+            <button
+              className="rounded-full h-12 w-12 flex items-center justify-center hover:bg-gray-200 text-2xl leading-none focus:outline-none focus:bg-gray-200 absolute top-0 right-0 mt-10 mr-6"
+              onClick={closeModal}>
+              &times;
+            </button>
 
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full px-3 mb-6 md:mb-0">
@@ -197,31 +197,11 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
                 <div className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                   Tags
                 </div>
-                <div className="mt-4 flex flex-wrap">
-                  {Object.keys(tags).length > 0 &&
-                    Object.keys(tags).map(type => (
-                      <div key={type} className={`w-1/${Object.keys(tags).length}`}>
-                        <div className="uppercase tracking-wide text-gray-500 text-xs font-medium mb-2">
-                          {type}
-                        </div>
-
-                        {tags[type].length > 0 &&
-                          tags[type].map(tag => (
-                            <label className="flex items-center text-gray-700" key={tag.id}>
-                              <input
-                                type="checkbox"
-                                className="form-checkbox"
-                                name={tag.name}
-                                onChange={handleChange}
-                                value="tag"
-                                defaultChecked={inputs.tags.includes(tag.name)}
-                              />
-                              <span className="ml-2 capitalize">{tag.name}</span>
-                            </label>
-                          ))}
-                      </div>
-                    ))}
-                </div>
+                <TagCheckboxes
+                  tagsMap={tags}
+                  handleChange={handleChange}
+                  defaultCheckedItems={inputs.tags}
+                />
               </div>
             </div>
 
