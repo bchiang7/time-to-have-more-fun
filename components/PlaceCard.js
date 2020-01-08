@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { EventBus } from '../utils';
+import Tag from './Tag';
 
 const PlaceCard = ({ place }) => {
   const editPlace = () => {
@@ -14,9 +15,9 @@ const PlaceCard = ({ place }) => {
   };
 
   return (
-    <div className="w-1/3 p-3 mb-3">
+    <div className="w-1/4 p-3 mb-3">
       <div
-        className="max-w-sm h-full rounded overflow-hidden shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none flex flex-col justify-between cursor-pointer"
+        className="w-full h-full rounded overflow-hidden shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none flex flex-col justify-between cursor-pointer"
         onClick={editPlace}
         onKeyDown={handleKeyDown}
         role="button"
@@ -44,24 +45,7 @@ const PlaceCard = ({ place }) => {
         <div className="px-6 py-4 flex flex-wrap items-center">
           {place.tags &&
             place.tags.length > 0 &&
-            place.tags.map((tag, i) => (
-              <span
-                className="bg-gray-200 rounded-full px-3 py-1 text-sm font-medium text-gray-700 mr-2 mb-2 flex items-center"
-                key={i}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  width="24"
-                  height="24"
-                  className="inline-block fill-current w-4 mr-1">
-                  <path
-                    className="heroicon-ui"
-                    d="M2.59 13.41A1.98 1.98 0 0 1 2 12V7a5 5 0 0 1 5-5h4.99c.53 0 1.04.2 1.42.59l8 8a2 2 0 0 1 0 2.82l-8 8a2 2 0 0 1-2.82 0l-8-8zM20 12l-8-8H7a3 3 0 0 0-3 3v5l8 8 8-8zM7 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"
-                  />
-                </svg>
-                <span>{tag}</span>
-              </span>
-            ))}
+            place.tags.map((tag, i) => <Tag tag={tag} key={i} />)}
         </div>
       </div>
     </div>

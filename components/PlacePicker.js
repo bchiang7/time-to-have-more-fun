@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getAllTags } from '../utils';
+import Tag from './Tag';
 
 const PlacePicker = () => {
   const [tags, setTags] = useState([]);
@@ -21,15 +22,9 @@ const PlacePicker = () => {
     <section className="py-10">
       <h2 className="mb-5">Can't decide where to go?</h2>
 
-      {tags &&
-        tags.length > 0 &&
-        tags.map(tag => (
-          <span
-            className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
-            key={tag.id}>
-            #{tag.name}
-          </span>
-        ))}
+      <div className="py-4 flex flex-wrap items-center">
+        {tags && tags.length > 0 && tags.map(tag => <Tag tag={tag.name} key={tag.id} />)}
+      </div>
     </section>
   );
 };
