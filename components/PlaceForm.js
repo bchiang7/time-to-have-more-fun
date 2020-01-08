@@ -18,6 +18,8 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
     };
 
     fetchData();
+
+    document.querySelector('.modal-overlay').focus();
   }, []);
 
   const handleKeyDown = e => {
@@ -88,7 +90,7 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
             <h2 className="mb-10 flex justify-between">
               {isEditing ? 'Edit place' : 'Add a new place'}
               <button
-                className="rounded-full h-12 w-12 flex items-center justify-center hover:bg-gray-200 text-2xl -mr-4 leading-none pb-1"
+                className="rounded-full h-12 w-12 flex items-center justify-center hover:bg-gray-200 text-2xl -mr-4 leading-none pb-1 focus:outline-none"
                 onClick={closeModal}>
                 &times;
               </button>
