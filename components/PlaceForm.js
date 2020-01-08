@@ -22,12 +22,6 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
     document.querySelector('.modal-overlay').focus();
   }, []);
 
-  const handleKeyDown = e => {
-    if (e.keyCode === 27) {
-      closeModal();
-    }
-  };
-
   const handleChange = e => {
     e.persist();
 
@@ -40,8 +34,9 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
         return { ...inputs, [name]: value };
       }
 
-      // Handle tag checkboxes
-      const tags = checked ? [...inputs.tags, name] : [...inputs.tags.filter(t => t === name)];
+      // If the tag gets checked, add it to the list
+      // otherwise remove it from the list
+      const tags = checked ? [...inputs.tags, name] : inputs.tags.filter(t => t !== name);
 
       return { ...inputs, tags };
     });
@@ -76,13 +71,8 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
   };
 
   return (
-    <div role="dialog" className="modal w-full h-full fixed top-0 left-0 right-0 bottom-0 z-10">
-      <div
-        className="modal-overlay absolute w-full h-full bg-black opacity-25 top-0 left-0"
-        onClick={closeModal}
-        onKeyDown={handleKeyDown}
-        role="button"
-        tabIndex="0"></div>
+    <div role="dialog" className="modal w-full h-full fixed top-0 left-0 right-0 bottom-0">
+      <div className="modal-overlay absolute w-full h-full bg-black opacity-25 top-0 left-0 cursor-pointer"></div>
 
       <div className="relative w-full h-screen max-h-screen flex items-center justify-center">
         <div className="bg-white rounded-sm shadow-lg m-6 overflow-y-auto w-9/12 max-w-2xl modal-inner">
@@ -210,10 +200,10 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
                           <input
                             type="checkbox"
                             className="form-checkbox"
-                            name={tag.id}
+                            name={tag.name}
                             onChange={handleChange}
                             value="tag"
-                            defaultChecked={inputs.tags.includes(tag.id)}
+                            defaultChecked={inputs.tags.includes(tag.name)}
                           />
                           <span className="ml-2 capitalize">{tag.name}</span>
                         </label>

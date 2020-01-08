@@ -31,12 +31,12 @@ const getAllTags = async () => {
   }
 };
 
+/* eslint-disable */
 const slugify = str => {
   const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;';
   const b = 'aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------';
   const p = new RegExp(a.split('').join('|'), 'g');
 
-  /* eslint-disable */
   return str
     .toString()
     .toLowerCase()
@@ -47,8 +47,8 @@ const slugify = str => {
     .replace(/\-\-+/g, '-') // Replace multiple - with single -
     .replace(/^-+/, '') // Trim - from start of text
     .replace(/-+$/, ''); // Trim - from end of text
-  /* eslint-enable */
 };
+/* eslint-enable */
 
 const addPlace = async place => {
   try {

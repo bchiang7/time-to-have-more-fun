@@ -14,7 +14,7 @@ const PlaceCard = ({ place }) => {
   };
 
   return (
-    <div className="w-1/3 p-3">
+    <div className="w-1/3 p-3 mb-3">
       <div
         className="max-w-sm h-full rounded overflow-hidden shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none flex flex-col justify-between cursor-pointer"
         onClick={editPlace}
