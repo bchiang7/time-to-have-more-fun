@@ -3,7 +3,7 @@ import { getAllTags, addPlace, deletePlace } from '../utils';
 import PropTypes from 'prop-types';
 
 const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
-  const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState({});
   const [isErrorShown, setIsErrorShown] = useState(false);
   const [inputs, setInputs] = useState(placeToEdit);
 
@@ -11,7 +11,13 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
     const fetchData = async () => {
       try {
         const tagsArr = await getAllTags();
-        setTags(tagsArr);
+        const tagsMap = {};
+        const categories = Array.from(new Set(tagsArr.map(t => t.category)));
+        categories.forEach(category => {
+          tagsMap[category] = tagsArr.filter(t => t.category === category);
+        });
+
+        setTags(tagsMap);
       } catch (e) {
         console.error('📣: fetchData -> e', e);
       }
@@ -191,22 +197,28 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
                 <div className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                   Tags
                 </div>
-                <div className="mt-2 flex flex-wrap">
-                  {tags &&
-                    tags.length > 0 &&
-                    tags.map(tag => (
-                      <div key={tag.name} className="w-1/3">
-                        <label className="inline-flex items-center text-gray-700">
-                          <input
-                            type="checkbox"
-                            className="form-checkbox"
-                            name={tag.name}
-                            onChange={handleChange}
-                            value="tag"
-                            defaultChecked={inputs.tags.includes(tag.name)}
-                          />
-                          <span className="ml-2 capitalize">{tag.name}</span>
-                        </label>
+                <div className="mt-4 flex flex-wrap">
+                  {Object.keys(tags).length > 0 &&
+                    Object.keys(tags).map(type => (
+                      <div key={type} className={`w-1/${Object.keys(tags).length}`}>
+                        <div className="uppercase tracking-wide text-gray-500 text-xs font-medium mb-2">
+                          {type}
+                        </div>
+
+                        {tags[type].length > 0 &&
+                          tags[type].map(tag => (
+                            <label className="flex items-center text-gray-700" key={tag.id}>
+                              <input
+                                type="checkbox"
+                                className="form-checkbox"
+                                name={tag.name}
+                                onChange={handleChange}
+                                value="tag"
+                                defaultChecked={inputs.tags.includes(tag.name)}
+                              />
+                              <span className="ml-2 capitalize">{tag.name}</span>
+                            </label>
+                          ))}
                       </div>
                     ))}
                 </div>

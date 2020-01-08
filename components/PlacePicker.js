@@ -20,7 +20,7 @@ const PlacePicker = () => {
 
   return (
     <section className="py-10">
-      <h2 className="mb-5">Can't decide where to go?</h2>
+      <h2 className="text-5xl mb-5">This year we're going to...</h2>
 
       <div className="py-4 flex flex-wrap items-center">
         {tags && tags.length > 0 && tags.map(tag => <Tag tag={tag.name} key={tag.id} />)}
