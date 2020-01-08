@@ -8,7 +8,7 @@ const PlaceCard = ({ place }) => {
   };
 
   return (
-    <div className="w-1/3 px-3">
+    <div className="w-1/3 p-3">
       <div className="max-w-sm h-full rounded overflow-hidden shadow-md hover:shadow-lg">
         {place.img && (
           <div className="bg-gray-200 w-full">

@@ -19,3 +19,7 @@ a {
 body.freeze {
   overflow: hidden;
 }
+
+.modal-inner {
+  max-height: 90%;
+}

@@ -33,7 +33,7 @@ const BeenThere = () => {
     <section className="py-10">
       <h2 className="mb-8">Places we've been</h2>
 
-      <div className="flex mb-4 -mx-3">
+      <div className="flex flex-wrap mb-4 -mx-3">
         {places.length > 0 ? (
           places.map((place, i) => <PlaceCard place={place} key={i} />)
         ) : (

@@ -50,7 +50,7 @@ const Home = () => {
           <h1 className="font-bold">Time to Have More Fun!</h1>
 
           <button
-            className="inline-flex items-center bg-teal-500 hover:bg-teal-400 focus:outline-none focus:bg-teal-400 px-6 py-3 rounded-lg text-white font-small tracking-wide"
+            className="inline-flex items-center bg-teal-500 hover:bg-teal-400 focus:outline-none focus:bg-teal-400 px-6 py-3 rounded-lg text-white font-small tracking-wide shadow"
             onClick={addPlace}>
             Add Place
           </button>
