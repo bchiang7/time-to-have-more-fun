@@ -15,38 +15,36 @@ const PlaceCard = ({ place }) => {
   };
 
   return (
-    <div className="w-1/4 p-3 mb-3">
-      <div
-        className="w-full h-full rounded overflow-hidden shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none flex flex-col justify-between cursor-pointer"
-        onClick={editPlace}
-        onKeyDown={handleKeyDown}
-        role="button"
-        tabIndex="0">
-        <div>
-          {place.img && (
-            <div className="bg-gray-200 w-full">
-              <img className="w-full" src={place.img} alt="Sunset in the mountains" />
-            </div>
-          )}
-          <div className="px-6 py-4">
-            <div className="font-bold text-xl mb-2 flex justify-between items-center">
-              {place.name}
-            </div>
-
-            {place.description && <p className="text-gray-700 text-base">{place.description}</p>}
-            {place.visited === 'Yes' && place.visitedDate && (
-              <p className="text-gray-500 text-xs uppercase tracking-wide font-bold">
-                {place.visitedDate}
-              </p>
-            )}
+    <div
+      className="w-full h-full rounded overflow-hidden shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none flex flex-col justify-between cursor-pointer"
+      onClick={editPlace}
+      onKeyDown={handleKeyDown}
+      role="button"
+      tabIndex="0">
+      <div>
+        {place.img && (
+          <div className="bg-gray-200 w-full">
+            <img className="w-full" src={place.img} alt={place.name} />
           </div>
-        </div>
+        )}
+        <div className="px-6 py-4">
+          <div className="font-bold text-xl mb-2 flex justify-between items-center">
+            {place.name}
+          </div>
 
-        <div className="px-6 py-4 flex flex-wrap items-center">
-          {place.tags &&
-            place.tags.length > 0 &&
-            place.tags.map((tag, i) => <Tag tag={tag} key={i} />)}
+          {place.description && <p className="text-gray-700 text-base">{place.description}</p>}
+          {place.visited === 'Yes' && place.visitedDate && (
+            <p className="text-gray-500 text-xs uppercase tracking-wide font-bold">
+              {place.visitedDate}
+            </p>
+          )}
         </div>
+      </div>
+
+      <div className="px-6 py-4 flex flex-wrap items-center">
+        {place.tags &&
+          place.tags.length > 0 &&
+          place.tags.map((tag, i) => <Tag tag={tag} key={i} />)}
       </div>
     </div>
   );

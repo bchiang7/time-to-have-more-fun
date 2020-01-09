@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { getAllTags, getPlacesByTags } from '../utils';
 import TagCheckboxes from './TagCheckboxes';
+import PlaceCard from './PlaceCard';
 
 const PlacePicker = () => {
   const [tags, setTags] = useState({});
   const [tagsToQuery, setTagsToQuery] = useState([]);
   const [showError, setShowError] = useState(false);
   const [destination, setDestination] = useState(null);
+  const [destinationLoading, setDestinationLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,9 +48,14 @@ const PlacePicker = () => {
     }
 
     try {
+      setDestinationLoading(true);
       const places = await getPlacesByTags(tagsToQuery);
       const placeToGo = places[Math.floor(Math.random() * places.length)];
-      setDestination(placeToGo);
+
+      setTimeout(() => {
+        setDestinationLoading(false);
+        setDestination(placeToGo);
+      }, 4500);
     } catch (e) {
       console.error(e);
     }
@@ -73,10 +80,17 @@ const PlacePicker = () => {
           </button>
         </div>
       </div>
+
       <div className="w-1/2">
-        {destination && (
-          <div className="flex justify-center items-center h-full border border-red-400">
-            {destination.name}
+        {destination ? (
+          <PlaceCard place={destination} />
+        ) : (
+          <div>
+            <img
+              src={`/plane.${destinationLoading ? 'gif' : 'png'}`}
+              alt="Plane"
+              className="rounded-lg"
+            />
           </div>
         )}
       </div>

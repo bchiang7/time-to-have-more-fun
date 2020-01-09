@@ -20,7 +20,7 @@ const db = firebase.firestore();
 
 const snapshotToArray = querySnapshot => {
   if (!querySnapshot.docs && !querySnapshot.docs.length > 0) {
-    return [];
+    throw new Error('No docs!!');
   }
   return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 };
@@ -79,7 +79,10 @@ const deletePlace = async place => {
 const getPlacesByTags = async tags => {
   try {
     const placesRef = db.collection('places');
-    const querySnapshot = await placesRef.where('tags', 'array-contains-any', tags).get();
+    const querySnapshot = await placesRef
+      .where('tags', 'array-contains-any', tags)
+      .where('visited', '==', 'No')
+      .get();
     const places = snapshotToArray(querySnapshot);
     return places;
   } catch (e) {

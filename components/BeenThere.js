@@ -35,7 +35,11 @@ const BeenThere = () => {
 
       <div className="flex flex-wrap mb-4 -mx-3">
         {places.length > 0 ? (
-          places.map((place, i) => <PlaceCard place={place} key={i} />)
+          places.map((place, i) => (
+            <div className="w-1/4 p-3 mb-3" key={i}>
+              <PlaceCard place={place} />
+            </div>
+          ))
         ) : (
           <p className="text-base text-gray-700 p-3">Haven't been anywhere yet...</p>
         )}
