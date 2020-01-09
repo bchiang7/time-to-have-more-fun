@@ -84,14 +84,16 @@ const PlacePicker = () => {
       <div className="w-1/2">
         {destination ? (
           <PlaceCard place={destination} />
-        ) : (
-          <div>
-            <img
-              src={`/plane.${destinationLoading ? 'gif' : 'png'}`}
-              alt="Plane"
-              className="rounded-lg"
-            />
+        ) : typeof destination === 'undefined' ? (
+          <div className="flex justify-center items-center h-full text-gray-600">
+            <p>Sorry, nothing matched those tags!</p>
           </div>
+        ) : (
+          <img
+            src={`/plane.${destinationLoading ? 'gif' : 'png'}`}
+            alt="Plane"
+            className="rounded-lg"
+          />
         )}
       </div>
     </section>
