@@ -18,8 +18,12 @@ if (!firebase.apps.length) {
 
 const db = firebase.firestore();
 
-const snapshotToArray = querySnapshot =>
-  querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+const snapshotToArray = querySnapshot => {
+  if (!querySnapshot.docs && !querySnapshot.docs.length > 0) {
+    return [];
+  }
+  return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+};
 
 const getAllTags = async () => {
   try {
@@ -72,4 +76,15 @@ const deletePlace = async place => {
   }
 };
 
-export { EventBus, db, snapshotToArray, getAllTags, addPlace, deletePlace };
+const getPlacesByTags = async tags => {
+  try {
+    const placesRef = db.collection('places');
+    const querySnapshot = await placesRef.where('tags', 'array-contains-any', tags).get();
+    const places = snapshotToArray(querySnapshot);
+    return places;
+  } catch (e) {
+    console.error('📣: getPlacesByTags -> e', e);
+  }
+};
+
+export { EventBus, db, snapshotToArray, getAllTags, addPlace, deletePlace, getPlacesByTags };
