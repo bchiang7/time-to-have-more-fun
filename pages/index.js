@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Head from '../components/head';
+import Nav from '../components/nav';
 import PlaceForm from '../components/PlaceForm';
 import PlacePicker from '../components/PlacePicker';
 import WantToGo from '../components/WantToGo';
@@ -45,8 +46,10 @@ const Home = () => {
     <div>
       <Head title="Time to Have More Fun" />
 
+      <Nav addPlace={addPlace} />
+
       <div className="container mx-auto">
-        <header className="py-20 flex justify-between items-center">
+        {/* <header className="py-20 flex justify-between items-center">
           <h1 className="font-bold">Time to Have More Fun!</h1>
 
           <button
@@ -54,7 +57,7 @@ const Home = () => {
             onClick={addPlace}>
             Add Place
           </button>
-        </header>
+        </header> */}
 
         {isModalShown && (
           <PlaceForm closeModal={closeModal} isEditing={isEditing} placeToEdit={placeToEdit} />
