@@ -76,15 +76,30 @@ const deletePlace = async place => {
   }
 };
 
+const areArraysEqual = (arr1, arr2) => {
+  if (!Array.isArray(arr1) || !Array.isArray(arr2) || arr1.length !== arr2.length) {
+    return false;
+  }
+
+  const arr1Sorted = arr1.concat().sort();
+  const arr2Sorted = arr2.concat().sort();
+
+  for (let i = 0; i < arr1Sorted.length; i++) {
+    if (arr1Sorted[i] !== arr2Sorted[i]) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
 const getPlacesByTags = async tags => {
   try {
     const placesRef = db.collection('places');
-    const querySnapshot = await placesRef
-      .where('tags', 'array-contains-any', tags)
-      .where('visited', '==', 'No')
-      .get();
+    const querySnapshot = await placesRef.where('visited', '==', 'No').get();
     const places = snapshotToArray(querySnapshot);
-    return places;
+    const filteredPlaces = places.filter(place => areArraysEqual(place.tags, tags));
+    return filteredPlaces;
   } catch (e) {
     console.error('📣: getPlacesByTags -> e', e);
   }

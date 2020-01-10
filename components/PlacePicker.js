@@ -49,6 +49,10 @@ const PlacePicker = () => {
     try {
       setDestinationLoading(true);
       const places = await getPlacesByTags(tagsToQuery);
+      if (!places.length) {
+        console.warn('No places!');
+        setDestinationLoading(false);
+      }
       const placeToGo = places[Math.floor(Math.random() * places.length)];
 
       setTimeout(() => {
