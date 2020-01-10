@@ -82,7 +82,7 @@ const PlacePicker = () => {
       </div>
 
       <div className="lg:w-1/2">
-        {destination ? (
+        {destination && !destinationLoading ? (
           <PlaceCard place={destination} />
         ) : typeof destination === 'undefined' ? (
           <div className="flex justify-center items-center h-full rounded-lg text-gray-700 bg-gray-200">
