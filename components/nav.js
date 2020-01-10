@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Nav = ({ addPlace }) => (
-  <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-6">
+  <nav className="flex items-center justify-between flex-wrap bg-teal-500 py-4 px-6 fixed w-full">
     <div className="flex items-center flex-shrink-0 text-white">
       <svg
         className="fill-current h-8 w-8 mr-2"

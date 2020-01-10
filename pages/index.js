@@ -48,7 +48,7 @@ const Home = () => {
 
       <Nav addPlace={addPlace} />
 
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 pt-20">
         {isModalShown && (
           <PlaceForm closeModal={closeModal} isEditing={isEditing} placeToEdit={placeToEdit} />
         )}
