@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { EventBus } from '../utils';
-import Tag from './Tag';
+import { Tag } from '../components';
 
 const PlaceCard = ({ place }) => {
   const editPlace = () => {
@@ -16,19 +16,19 @@ const PlaceCard = ({ place }) => {
 
   return (
     <div
-      className="w-full h-full rounded overflow-hidden shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none flex flex-col justify-between cursor-pointer"
+      className="flex flex-col justify-between w-full h-full rounded overflow-hidden shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none cursor-pointer"
       onClick={editPlace}
       onKeyDown={handleKeyDown}
       role="button"
       tabIndex="0">
       <div>
         {place.img && (
-          <div className="bg-gray-200 w-full">
+          <div className="w-full bg-gray-200">
             <img className="w-full" src={place.img} alt={place.name} />
           </div>
         )}
         <div className="px-6 py-4">
-          <div className="font-bold text-xl mb-2 flex justify-between items-center">
+          <div className="flex justify-between items-center mb-2 text-xl font-bold">
             {place.name}
           </div>
 
@@ -41,7 +41,7 @@ const PlaceCard = ({ place }) => {
         </div>
       </div>
 
-      <div className="px-6 py-4 flex flex-wrap items-center">
+      <div className="flex flex-wrap items-center px-6 py-4">
         {place.tags &&
           place.tags.length > 0 &&
           place.tags.map((tag, i) => <Tag tag={tag} key={i} />)}

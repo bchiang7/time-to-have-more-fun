@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Nav = ({ addPlace }) => (
-  <nav className="flex items-center justify-between flex-wrap bg-teal-500 py-4 px-6 fixed w-full">
+  <nav className="fixed flex items-center justify-between flex-wrap w-full py-4 px-6 bg-teal-500">
     <div className="flex items-center flex-shrink-0 text-white">
       <svg
         className="fill-current h-8 w-8 mr-2"
@@ -23,12 +23,12 @@ const Nav = ({ addPlace }) => (
         />
       </svg>
 
-      <span className="font-medium text-xl tracking-tight">Time to Have More Fun</span>
+      <span className="text-xl font-medium tracking-tight">Time to Have More Fun</span>
     </div>
     <div className="">
       <button
         onClick={addPlace}
-        className="inline-block text-md px-4 py-3 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white focus:outline-none focus:bg-white focus:text-teal-500">
+        className="inline-block px-4 py-3 border rounded text-white text-md leading-none border-white hover:border-transparent hover:text-teal-500 hover:bg-white focus:outline-none focus:bg-white focus:text-teal-500">
         Add Place
       </button>
     </div>

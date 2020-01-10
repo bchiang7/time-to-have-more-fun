@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const TagCheckboxes = ({ tagsMap, handleChange, defaultCheckedItems }) => (
-  <div className="mt-4 flex flex-wrap">
+  <div className="flex flex-wrap mt-4">
     {Object.keys(tagsMap).length > 0 &&
       Object.keys(tagsMap).map(type => (
         <div key={type} className={`w-1/${Object.keys(tagsMap).length}`}>
-          <div className="uppercase tracking-wide text-gray-500 text-xs font-medium mb-2">
+          <div className=" mb-2 text-gray-500 text-xs font-medium tracking-wide uppercase">
             {type}
           </div>
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { getAllTags, addPlace, deletePlace } from '../utils';
 import PropTypes from 'prop-types';
-import TagCheckboxes from './TagCheckboxes';
+import { getAllTags, addPlace, deletePlace } from '../utils';
+import { TagCheckboxes } from '../components';
 
 const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
   const [tags, setTags] = useState({});
@@ -76,18 +76,18 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
   };
 
   return (
-    <div role="dialog" className="modal w-full h-full fixed top-0 left-0 right-0 bottom-0">
-      <div className="modal-overlay absolute w-full h-full bg-black opacity-25 top-0 left-0 cursor-pointer"></div>
+    <div role="dialog" className="modal fixed top-0 left-0 right-0 bottom-0 w-full h-full">
+      <div className="modal-overlay absolute top-0 left-0 w-full h-full bg-black opacity-25 cursor-pointer"></div>
 
       <div className="relative w-full h-screen max-h-screen flex items-center justify-center">
-        <div className="bg-white rounded-sm shadow-lg m-6 overflow-y-auto w-full md:w-9/12 md:max-w-2xl modal-inner">
-          <form className="w-full py-10 px-6 md:p-10 relative" onSubmit={onSubmit}>
-            <h2 className="mb-10 flex justify-between">
+        <div className="modal-inner w-full md:w-9/12 md:max-w-2xl m-6 bg-white rounded-sm shadow-lg overflow-y-auto">
+          <form className="relative w-full py-10 px-6 md:p-10" onSubmit={onSubmit}>
+            <h2 className="flex justify-between mb-10">
               {isEditing ? 'Edit place' : 'Add a new place'}
             </h2>
 
             <button
-              className="rounded-full h-12 w-12 flex items-center justify-center hover:bg-gray-200 text-2xl leading-none focus:outline-none focus:bg-gray-200 absolute top-0 right-0 mt-10 mr-6 pb-1"
+              className="flex items-center justify-center absolute top-0 right-0 mt-10 mr-6 pb-1 h-12 w-12 rounded-full text-2xl leading-none hover:bg-gray-200 focus:outline-none focus:bg-gray-200"
               onClick={closeModal}>
               &times;
             </button>
@@ -95,14 +95,14 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full px-3 mb-6 md:mb-0">
                 <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  className="block mb-2 text-gray-700 text-xs font-bold tracking-wide uppercase"
                   htmlFor="name">
                   Name
                 </label>
                 <input
                   id="name"
                   name="name"
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="appearance-none block w-full py-3 px-4 bg-gray-200 text-gray-700 border border-gray-200 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   type="text"
                   placeholder="Budapest"
                   value={inputs.name}
@@ -113,7 +113,7 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full px-3 mb-6 md:mb-0">
                 <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  className="block mb-2 text-gray-700 text-xs font-bold tracking-wide uppercase"
                   htmlFor="description">
                   Description
                 </label>
@@ -131,11 +131,11 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full px-3 mb-6 md:mb-0">
                 <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 flex justify-between"
+                  className="flex justify-between mb-2 text-gray-700 text-xs font-bold tracking-wide uppercase"
                   htmlFor="img">
                   <span>Image URL</span>
                   {inputs.img && (
-                    <span className="font-medium text-teal-500">
+                    <span className="text-teal-500 font-medium">
                       <a href={inputs.img} target="_blank" rel="noopener noreferrer">
                         Preview
                       </a>
@@ -145,7 +145,7 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
                 <input
                   id="img"
                   name="img"
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="appearance-none block w-full py-3 px-4 bg-gray-200 text-gray-700 border border-gray-200 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   type="url"
                   placeholder="https://images.unsplash.com/photo-abc123"
                   value={inputs.img}
@@ -157,7 +157,7 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  className="block mb-2 text-gray-700 text-xs font-bold tracking-wide uppercase"
                   htmlFor="visited">
                   Been there?
                 </label>
@@ -183,14 +183,14 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
               </div>
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  className="block mb-2 text-gray-700 text-xs font-bold tracking-wide uppercase"
                   htmlFor="visitedDate">
                   Visited Date
                 </label>
                 <input
                   id="visitedDate"
                   name="visitedDate"
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="appearance-none block w-full py-3 px-4 bg-gray-200 text-gray-700 border border-gray-200 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   type="text"
                   placeholder="1/1/2020"
                   value={inputs.visitedDate}
@@ -201,7 +201,7 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
 
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full px-3 mb-6 md:mb-0">
-                <div className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                <div className="block mb-2 text-gray-700 text-xs font-bold tracking-wide uppercase">
                   Tags
                 </div>
                 <TagCheckboxes
@@ -214,7 +214,7 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
 
             {isErrorShown && (
               <div
-                className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+                className="relative px-4 py-3 bg-red-100 border border-red-400 rounded text-red-700"
                 role="alert">
                 <strong className="font-bold mr-1">Oh no!</strong>
                 <span className="block sm:inline">Something bad happened!</span>
@@ -224,14 +224,14 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
             <div className="flex justify-between mt-10">
               {isEditing && (
                 <button
-                  className="bg-gray-300 hover:bg-gray-400 focus:bg-gray-400 text-gray-800 focus:outline-none px-6 py-3 rounded-lg text-white font-small tracking-wide"
+                  className="px-6 py-3 bg-gray-300 hover:bg-gray-400 focus:bg-gray-400 focus:outline-none rounded-lg text-gray-600 font-small tracking-wide"
                   onClick={onDelete}>
                   Delete
                 </button>
               )}
 
               <button
-                className="bg-teal-500 hover:bg-teal-400 focus:outline-none focus:bg-teal-400 px-6 py-3 rounded-lg text-white font-small tracking-wide"
+                className="px-6 py-3 bg-teal-500 hover:bg-teal-400 focus:outline-none focus:bg-teal-400 rounded-lg text-white font-small tracking-wide"
                 type="submit">
                 {isEditing ? 'Save' : 'Add'}
               </button>

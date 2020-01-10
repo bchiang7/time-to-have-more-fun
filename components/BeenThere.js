@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { db, snapshotToArray } from '../utils';
-import PlaceCard from './PlaceCard';
+import { PlaceCard } from '../components';
 
 const BeenThere = () => {
   const [places, setPlaces] = useState([]);
@@ -19,14 +19,15 @@ const BeenThere = () => {
       }
     };
 
+    fetchData();
+
+    // Listen for live updates
     db.collection('places')
       .where('visited', '==', 'Yes')
       .onSnapshot(querySnapshot => {
         const placesArr = snapshotToArray(querySnapshot);
         setPlaces(placesArr);
       });
-
-    fetchData();
   }, []);
 
   return (
@@ -36,12 +37,12 @@ const BeenThere = () => {
       <div className="flex flex-wrap mb-4 -mx-3">
         {places.length > 0 ? (
           places.map((place, i) => (
-            <div className="lg:w-1/4 sm:w-1/2 w-full p-3 mb-3" key={i}>
+            <div className="w-full sm:w-1/2 lg:w-1/4 p-3 mb-3" key={i}>
               <PlaceCard place={place} />
             </div>
           ))
         ) : (
-          <p className="text-base text-gray-700 p-3">Haven't been anywhere yet...</p>
+          <p className="p-3 text-base text-gray-700">Haven't been anywhere yet...</p>
         )}
       </div>
     </section>

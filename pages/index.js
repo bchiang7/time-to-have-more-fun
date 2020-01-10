@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
-import Head from '../components/head';
-import Nav from '../components/nav';
-import PlaceForm from '../components/PlaceForm';
-import PlacePicker from '../components/PlacePicker';
-import WantToGo from '../components/WantToGo';
-import BeenThere from '../components/BeenThere';
 import { EventBus } from '../utils';
+import { Head, Nav, PlaceForm, PlacePicker, WantToGo, BeenThere } from '../components';
 
 const defaultPlace = {
   name: '',
