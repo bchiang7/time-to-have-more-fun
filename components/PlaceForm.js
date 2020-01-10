@@ -87,7 +87,7 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
             </h2>
 
             <button
-              className="rounded-full h-12 w-12 flex items-center justify-center hover:bg-gray-200 text-2xl leading-none focus:outline-none focus:bg-gray-200 absolute top-0 right-0 mt-10 mr-6"
+              className="rounded-full h-12 w-12 flex items-center justify-center hover:bg-gray-200 text-2xl leading-none focus:outline-none focus:bg-gray-200 absolute top-0 right-0 mt-10 mr-6 pb-1"
               onClick={closeModal}>
               &times;
             </button>
@@ -131,9 +131,16 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full px-3 mb-6 md:mb-0">
                 <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 flex justify-between"
                   htmlFor="img">
-                  Image URL
+                  <span>Image URL</span>
+                  {inputs.img && (
+                    <span className="font-medium text-teal-500">
+                      <a href={inputs.img} target="_blank" rel="noopener noreferrer">
+                        Preview
+                      </a>
+                    </span>
+                  )}
                 </label>
                 <input
                   id="img"
