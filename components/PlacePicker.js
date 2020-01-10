@@ -62,8 +62,8 @@ const PlacePicker = () => {
   };
 
   return (
-    <section className="py-10 flex justify-between">
-      <div className="w-1/2">
+    <section className="py-12 md:flex md:justify-between">
+      <div className="lg:w-1/2">
         <h2 className="text-4xl mb-5">This year we're going to...</h2>
 
         <div className="py-4 w-full">
@@ -72,7 +72,7 @@ const PlacePicker = () => {
 
         {showError && <p className="text-red-400 my-4">Select some tags first!</p>}
 
-        <div className="mt-10">
+        <div className="mt-10 flex justify-center md:justify-start">
           <button
             className="inline-flex items-center bg-teal-500 hover:bg-teal-400 hover:shadow-lg focus:outline-none focus:bg-teal-400 px-6 py-3 rounded-lg text-white font-small tracking-wide shadow"
             onClick={queryPlaces}>
@@ -81,11 +81,11 @@ const PlacePicker = () => {
         </div>
       </div>
 
-      <div className="w-1/2">
+      <div className="lg:w-1/2">
         {destination ? (
           <PlaceCard place={destination} />
         ) : typeof destination === 'undefined' ? (
-          <div className="flex justify-center items-center h-full text-gray-600">
+          <div className="flex justify-center items-center h-full rounded-lg text-gray-700 bg-gray-200">
             <p>Sorry, nothing matched those tags!</p>
           </div>
         ) : (

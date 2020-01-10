@@ -48,17 +48,7 @@ const Home = () => {
 
       <Nav addPlace={addPlace} />
 
-      <div className="container mx-auto">
-        {/* <header className="py-20 flex justify-between items-center">
-          <h1 className="font-bold">Time to Have More Fun!</h1>
-
-          <button
-            className="inline-flex items-center bg-teal-500 hover:bg-teal-400 hover:shadow-lg focus:outline-none focus:bg-teal-400 px-6 py-3 rounded-lg text-white font-small tracking-wide shadow"
-            onClick={addPlace}>
-            Add Place
-          </button>
-        </header> */}
-
+      <div className="container mx-auto px-4">
         {isModalShown && (
           <PlaceForm closeModal={closeModal} isEditing={isEditing} placeToEdit={placeToEdit} />
         )}

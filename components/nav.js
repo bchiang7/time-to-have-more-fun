@@ -23,12 +23,12 @@ const Nav = ({ addPlace }) => (
         />
       </svg>
 
-      <span className="font-semibold text-xl tracking-tight">Time to Have More Fun</span>
+      <span className="font-medium text-xl tracking-tight">Time to Have More Fun</span>
     </div>
     <div className="">
       <button
         onClick={addPlace}
-        className="inline-block text-sm px-4 py-3 leading-none border rounded-lg text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white focus:outline-none focus:bg-white focus:text-teal-500 mt-4 lg:mt-0">
+        className="inline-block text-md px-4 py-3 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white focus:outline-none focus:bg-white focus:text-teal-500">
         Add Place
       </button>
     </div>

@@ -80,8 +80,8 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
       <div className="modal-overlay absolute w-full h-full bg-black opacity-25 top-0 left-0 cursor-pointer"></div>
 
       <div className="relative w-full h-screen max-h-screen flex items-center justify-center">
-        <div className="bg-white rounded-sm shadow-lg m-6 overflow-y-auto w-9/12 max-w-2xl modal-inner">
-          <form className="w-full p-10 relative" onSubmit={onSubmit}>
+        <div className="bg-white rounded-sm shadow-lg m-6 overflow-y-auto w-full md:w-9/12 md:max-w-2xl modal-inner">
+          <form className="w-full py-10 px-6 md:p-10 relative" onSubmit={onSubmit}>
             <h2 className="mb-10 flex justify-between">
               {isEditing ? 'Edit place' : 'Add a new place'}
             </h2>
