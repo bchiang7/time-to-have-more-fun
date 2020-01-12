@@ -1,32 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { getAllTags, getPlacesByTags } from '../utils';
+import React, { useState } from 'react';
+import { getPlacesByTags } from '../utils';
 import { TagCheckboxes, PlaceCard } from '../components';
 
 const PlacePicker = () => {
-  const [tags, setTags] = useState({});
-  const [tagsToQuery, setTagsToQuery] = useState([]);
+  const [tagsToQuery, setTagsToQuery] = useState({
+    type: '',
+    temperature: '',
+    flight: '',
+  });
   const [showError, setShowError] = useState(false);
   const [destination, setDestination] = useState(null);
   const [destinationLoading, setDestinationLoading] = useState(false);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const tagsArr = await getAllTags();
-        const tagsMap = {};
-        const categories = Array.from(new Set(tagsArr.map(t => t.category)));
-        categories.forEach(category => {
-          tagsMap[category] = tagsArr.filter(t => t.category === category);
-        });
-
-        setTags(tagsMap);
-      } catch (e) {
-        console.error('📣: fetchData -> e', e);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   const handleChange = e => {
     e.persist();
@@ -34,25 +18,29 @@ const PlacePicker = () => {
     setShowError(false);
 
     setTagsToQuery(tagsToQuery => {
-      const { name, checked } = e.target;
-      const tags = checked ? [...tagsToQuery, name] : tagsToQuery.filter(t => t !== name);
-      return tags;
+      const { name, value } = e.target;
+      const queryThese = { ...tagsToQuery, [name]: value.substring(4) };
+      return queryThese;
     });
   };
 
   const queryPlaces = async () => {
-    if (!tagsToQuery.length) {
-      setShowError(true);
-      return;
-    }
-
     try {
+      setShowError(false);
       setDestinationLoading(true);
+      setDestination(null);
       const places = await getPlacesByTags(tagsToQuery);
+
       if (!places.length) {
-        console.warn('No places!');
-        setDestinationLoading(false);
+        console.warn('No places returned!');
+        setTimeout(() => {
+          setShowError(true);
+          setDestinationLoading(false);
+          setDestination(null);
+        }, 1000);
+        return;
       }
+
       const placeToGo = places[Math.floor(Math.random() * places.length)];
 
       setTimeout(() => {
@@ -70,10 +58,8 @@ const PlacePicker = () => {
         <h2 className="mb-5 text-4xl">This year we're going to...</h2>
 
         <div className="w-full py-4">
-          <TagCheckboxes tagsMap={tags} handleChange={handleChange} />
+          <TagCheckboxes handleChange={handleChange} />
         </div>
-
-        {showError && <p className="my-4 text-red-400">Select some tags first!</p>}
 
         <div className="flex justify-center md:justify-start mt-10">
           <button
@@ -85,18 +71,16 @@ const PlacePicker = () => {
       </div>
 
       <div className="lg:w-1/2">
-        {destination && !destinationLoading ? (
+        {destination ? (
           <PlaceCard place={destination} />
-        ) : typeof destination === 'undefined' ? (
+        ) : showError ? (
           <div className="flex justify-center items-center h-full rounded-lg bg-gray-200 text-gray-700">
             <p>Sorry, nothing matched those tags!</p>
           </div>
+        ) : destinationLoading ? (
+          <img src="/plane.gif" alt="Plane taking off" className="rounded-lg" />
         ) : (
-          <img
-            src={`/plane.${destinationLoading ? 'gif' : 'png'}`}
-            alt="Plane"
-            className="rounded-lg"
-          />
+          <img src="/plane.png" alt="Plane" className="rounded-lg" />
         )}
       </div>
     </section>

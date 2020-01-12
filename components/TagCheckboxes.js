@@ -1,40 +1,47 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { defaultTags } from '../utils';
 
-const TagCheckboxes = ({ tagsMap, handleChange, defaultCheckedItems }) => (
-  <div className="flex flex-wrap mt-4">
-    {Object.keys(tagsMap).length > 0 &&
-      Object.keys(tagsMap).map(type => (
-        <div key={type} className={`w-1/${Object.keys(tagsMap).length}`}>
-          <div className=" mb-2 text-gray-500 text-xs font-medium tracking-wide uppercase">
-            {type}
-          </div>
+const TagCheckboxes = ({ handleChange, defaultCheckedItems }) => {
+  const categories = Object.keys(defaultTags);
 
-          {tagsMap[type].length > 0 &&
-            tagsMap[type].map(tag => (
-              <label className="flex items-center text-gray-700" key={tag.id}>
-                <input
-                  type="checkbox"
-                  className="form-checkbox"
-                  name={tag.name}
-                  onChange={handleChange}
-                  value="tag"
-                  defaultChecked={
-                    defaultCheckedItems ? defaultCheckedItems.includes(tag.name) : false
-                  }
-                />
-                <span className="ml-2 capitalize">{tag.name}</span>
-              </label>
-            ))}
-        </div>
-      ))}
-  </div>
-);
+  return (
+    <div className="flex flex-wrap mt-4">
+      {categories.length > 0 &&
+        categories.map(type => {
+          const options = Object.keys(defaultTags[type]);
+
+          return (
+            <div key={type} className={`w-1/${categories.length}`}>
+              <div className=" mb-2 text-gray-500 text-xs font-medium tracking-wide uppercase">
+                {type}
+              </div>
+
+              {options.length > 0 &&
+                options.map((tag, i) => (
+                  <label className="flex items-center text-gray-700" key={i}>
+                    <input
+                      type="radio"
+                      name={type}
+                      onChange={handleChange}
+                      value={`tag-${tag}`}
+                      defaultChecked={
+                        defaultCheckedItems ? defaultCheckedItems[type] === tag : false
+                      }
+                    />
+                    <span className="ml-2 capitalize">{tag}</span>
+                  </label>
+                ))}
+            </div>
+          );
+        })}
+    </div>
+  );
+};
 
 TagCheckboxes.propTypes = {
-  tagsMap: PropTypes.object.isRequired,
   handleChange: PropTypes.func.isRequired,
-  defaultCheckedItems: PropTypes.array,
+  defaultCheckedItems: PropTypes.object,
 };
 
 export default TagCheckboxes;

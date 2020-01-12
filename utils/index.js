@@ -35,6 +35,32 @@ const getAllTags = async () => {
   }
 };
 
+const getUnvisitedPlaces = async () => {
+  try {
+    const querySnapshot = await db
+      .collection('places')
+      .where('visited', '==', 'No')
+      .get();
+    const placesArr = snapshotToArray(querySnapshot);
+    return placesArr;
+  } catch (e) {
+    console.error('📣: fetchData -> e', e);
+  }
+};
+
+const getVisitedPlaces = async () => {
+  try {
+    const querySnapshot = await db
+      .collection('places')
+      .where('visited', '==', 'Yes')
+      .get();
+    const placesArr = snapshotToArray(querySnapshot);
+    return placesArr;
+  } catch (e) {
+    console.error('📣: fetchData -> e', e);
+  }
+};
+
 /* eslint-disable */
 const slugify = str => {
   const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;';
@@ -76,33 +102,60 @@ const deletePlace = async place => {
   }
 };
 
-const areArraysEqual = (arr1, arr2) => {
-  if (!Array.isArray(arr1) || !Array.isArray(arr2) || arr1.length !== arr2.length) {
-    return false;
-  }
-
-  const arr1Sorted = arr1.concat().sort();
-  const arr2Sorted = arr2.concat().sort();
-
-  for (let i = 0; i < arr1Sorted.length; i++) {
-    if (arr1Sorted[i] !== arr2Sorted[i]) {
-      return false;
-    }
-  }
-
-  return true;
+const defaultTags = {
+  type: {
+    adventure: false,
+    beach: false,
+    city: false,
+    ski: false,
+  },
+  temperature: {
+    hot: false,
+    cold: false,
+    temperate: false,
+  },
+  flight: {
+    long: false,
+    medium: false,
+    short: false,
+  },
 };
 
-const getPlacesByTags = async tags => {
+const defaultTagField = {
+  type: '',
+  temperature: '',
+  flight: '',
+};
+
+const getPlacesByTags = async tagsToQuery => {
   try {
-    const placesRef = db.collection('places');
-    const querySnapshot = await placesRef.where('visited', '==', 'No').get();
+    let query = db.collection('places').where('visited', '==', 'No');
+
+    for (const key in tagsToQuery) {
+      const value = tagsToQuery[key];
+      if (value) {
+        query = query.where(`tags.${key}`, '==', value);
+      }
+    }
+
+    const querySnapshot = await query.get();
     const places = snapshotToArray(querySnapshot);
-    const filteredPlaces = places.filter(place => areArraysEqual(place.tags, tags));
-    return filteredPlaces;
+    return places;
   } catch (e) {
     console.error('📣: getPlacesByTags -> e', e);
   }
 };
 
-export { EventBus, db, snapshotToArray, getAllTags, addPlace, deletePlace, getPlacesByTags };
+export {
+  EventBus,
+  db,
+  snapshotToArray,
+  defaultTags,
+  defaultTagField,
+  getAllTags,
+  addPlace,
+  deletePlace,
+  getPlacesByTags,
+  getUnvisitedPlaces,
+  getVisitedPlaces,
+};

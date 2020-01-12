@@ -1,31 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { getAllTags, addPlace, deletePlace } from '../utils';
+import { addPlace, deletePlace } from '../utils';
 import { TagCheckboxes } from '../components';
 
 const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
-  const [tags, setTags] = useState({});
   const [isErrorShown, setIsErrorShown] = useState(false);
   const [inputs, setInputs] = useState(placeToEdit);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const tagsArr = await getAllTags();
-        const tagsMap = {};
-        const categories = Array.from(new Set(tagsArr.map(t => t.category)));
-        categories.forEach(category => {
-          tagsMap[category] = tagsArr.filter(t => t.category === category);
-        });
-
-        setTags(tagsMap);
-      } catch (e) {
-        console.error('📣: fetchData -> e', e);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   const handleChange = e => {
     e.persist();
@@ -33,15 +13,20 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
     setIsErrorShown(false);
 
     setInputs(inputs => {
-      const { name, value, checked } = e.target;
+      const { name, value } = e.target;
+      const isTag = value.substring(0, 4) === 'tag-';
 
-      if (value !== 'tag') {
+      if (!isTag) {
         return { ...inputs, [name]: value };
       }
 
-      // If the tag gets checked, add it to the list
-      // otherwise remove it from the list
-      const tags = checked ? [...inputs.tags, name] : inputs.tags.filter(t => t !== name);
+      const tagVal = isTag ? value.substring(4) : '';
+
+      const tags = {
+        type: name === 'type' ? tagVal : inputs.tags.type,
+        temperature: name === 'temperature' ? tagVal : inputs.tags.temperature,
+        flight: name === 'flight' ? tagVal : inputs.tags.flight,
+      };
 
       return { ...inputs, tags };
     });
@@ -204,11 +189,7 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
                 <div className="block mb-2 text-gray-700 text-xs font-bold tracking-wide uppercase">
                   Tags
                 </div>
-                <TagCheckboxes
-                  tagsMap={tags}
-                  handleChange={handleChange}
-                  defaultCheckedItems={inputs.tags}
-                />
+                <TagCheckboxes handleChange={handleChange} defaultCheckedItems={inputs.tags} />
               </div>
             </div>
 

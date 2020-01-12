@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { db, snapshotToArray } from '../utils';
+import { db, snapshotToArray, getUnvisitedPlaces } from '../utils';
 import { PlaceCard } from '../components';
 
 const WantToGo = () => {
@@ -8,11 +8,7 @@ const WantToGo = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const querySnapshot = await db
-          .collection('places')
-          .where('visited', '==', 'No')
-          .get();
-        const placesArr = snapshotToArray(querySnapshot);
+        const placesArr = await getUnvisitedPlaces();
         setPlaces(placesArr);
       } catch (e) {
         console.error('📣: fetchData -> e', e);

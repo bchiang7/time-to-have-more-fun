@@ -43,8 +43,12 @@ const PlaceCard = ({ place }) => {
 
       <div className="flex flex-wrap items-center px-6 py-4">
         {place.tags &&
-          place.tags.length > 0 &&
-          place.tags.map((tag, i) => <Tag tag={tag} key={i} />)}
+          Object.keys(place.tags).map(
+            (category, i) =>
+              place.tags[category] && (
+                <Tag tag={place.tags[category]} key={i} isFlight={category === 'flight'} />
+              ),
+          )}
       </div>
     </div>
   );

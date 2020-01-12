@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { EventBus } from '../utils';
+import { EventBus, defaultTagField } from '../utils';
 import { Head, Nav, PlaceForm, PlacePicker, WantToGo, BeenThere } from '../components';
 
 const defaultPlace = {
@@ -8,7 +8,7 @@ const defaultPlace = {
   img: '',
   visited: 'No',
   visitedDate: '',
-  tags: [],
+  tags: defaultTagField,
 };
 
 const Home = () => {
