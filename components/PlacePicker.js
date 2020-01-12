@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
-import { getPlacesByTags } from '../utils';
+import { getPlacesByTags, defaultTagField } from '../utils';
 import { TagCheckboxes, PlaceCard } from '../components';
 
 const PlacePicker = () => {
-  const [tagsToQuery, setTagsToQuery] = useState({
-    type: '',
-    temperature: '',
-    flight: '',
-  });
+  const [tagsToQuery, setTagsToQuery] = useState(defaultTagField);
   const [showError, setShowError] = useState(false);
+  const [showClearButton, setShowClearButton] = useState(false);
   const [destination, setDestination] = useState(null);
   const [destinationLoading, setDestinationLoading] = useState(false);
 
@@ -16,6 +13,7 @@ const PlacePicker = () => {
     e.persist();
 
     setShowError(false);
+    setShowClearButton(true);
 
     setTagsToQuery(tagsToQuery => {
       const { name, value } = e.target;
@@ -52,6 +50,13 @@ const PlacePicker = () => {
     }
   };
 
+  const clearFilters = () => {
+    const filters = document.querySelectorAll('input[type="radio"]');
+    const checkedFilters = Array.from(filters).filter(f => f.checked);
+    checkedFilters.forEach(f => (f.checked = false));
+    setTagsToQuery(defaultTagField);
+  };
+
   return (
     <section className="py-12 md:flex md:justify-between">
       <div className="lg:w-1/2">
@@ -67,6 +72,14 @@ const PlacePicker = () => {
             onClick={queryPlaces}>
             Tell me already!!!
           </button>
+
+          {showClearButton && (
+            <button
+              className="ml-6 text-teal-500 hover:text-teal-400 focus:text-teal-400 focus:outline-none"
+              onClick={clearFilters}>
+              Clear Filters
+            </button>
+          )}
         </div>
       </div>
 

@@ -25,16 +25,6 @@ const snapshotToArray = querySnapshot => {
   return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 };
 
-const getAllTags = async () => {
-  try {
-    const querySnapshot = await db.collection('tags').get();
-    const tags = snapshotToArray(querySnapshot);
-    return tags;
-  } catch (e) {
-    console.error('📣: getAllTags -> e', e);
-  }
-};
-
 const getUnvisitedPlaces = async () => {
   try {
     const querySnapshot = await db
@@ -152,7 +142,6 @@ export {
   snapshotToArray,
   defaultTags,
   defaultTagField,
-  getAllTags,
   addPlace,
   deletePlace,
   getPlacesByTags,
