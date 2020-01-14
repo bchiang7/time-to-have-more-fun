@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { addPlace, deletePlace } from '../utils';
 import { TagCheckboxes } from '../components';
 
-const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
+const PlaceForm = ({ closeModal, isEditing, placeToEdit, authed }) => {
   const [isErrorShown, setIsErrorShown] = useState(false);
   const [inputs, setInputs] = useState(placeToEdit);
 
@@ -202,21 +202,23 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit }) => {
               </div>
             )}
 
-            <div className="flex justify-between mt-10">
-              {isEditing && (
-                <button
-                  className="px-6 py-3 bg-gray-300 hover:bg-gray-400 focus:bg-gray-400 focus:outline-none rounded-lg text-gray-600 font-small tracking-wide"
-                  onClick={onDelete}>
-                  Delete
-                </button>
-              )}
+            {authed && (
+              <div className="flex justify-between mt-10">
+                {isEditing && (
+                  <button
+                    className="px-6 py-3 bg-gray-300 hover:bg-gray-400 focus:bg-gray-400 focus:outline-none rounded-lg text-gray-600 font-small tracking-wide"
+                    onClick={onDelete}>
+                    Delete
+                  </button>
+                )}
 
-              <button
-                className="px-6 py-3 bg-teal-500 hover:bg-teal-400 focus:outline-none focus:bg-teal-400 rounded-lg text-white font-small tracking-wide"
-                type="submit">
-                {isEditing ? 'Save' : 'Add'}
-              </button>
-            </div>
+                <button
+                  className="px-6 py-3 bg-teal-500 hover:bg-teal-400 focus:outline-none focus:bg-teal-400 rounded-lg text-white font-small tracking-wide"
+                  type="submit">
+                  {isEditing ? 'Save' : 'Add'}
+                </button>
+              </div>
+            )}
           </form>
         </div>
       </div>
@@ -228,6 +230,7 @@ PlaceForm.propTypes = {
   closeModal: PropTypes.func.isRequired,
   isEditing: PropTypes.bool.isRequired,
   placeToEdit: PropTypes.object.isRequired,
+  authed: PropTypes.bool.isRequired,
 };
 
 export default PlaceForm;

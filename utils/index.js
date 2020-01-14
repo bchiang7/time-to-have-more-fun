@@ -1,6 +1,7 @@
 import EventBus from './EventBus';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+import 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -17,6 +18,7 @@ if (!firebase.apps.length) {
 }
 
 const db = firebase.firestore();
+const auth = firebase.auth();
 
 const snapshotToArray = querySnapshot => {
   if (!querySnapshot.docs && !querySnapshot.docs.length > 0) {
@@ -136,9 +138,19 @@ const getPlacesByTags = async tagsToQuery => {
   }
 };
 
+const login = async ({ email, password }) => {
+  try {
+    await auth.signInWithEmailAndPassword(email, password);
+  } catch (e) {
+    const { code, message } = e;
+    console.error('📣: login -> error', code, message);
+  }
+};
+
 export {
   EventBus,
   db,
+  auth,
   snapshotToArray,
   defaultTags,
   defaultTagField,
@@ -147,4 +159,5 @@ export {
   getPlacesByTags,
   getUnvisitedPlaces,
   getVisitedPlaces,
+  login,
 };
