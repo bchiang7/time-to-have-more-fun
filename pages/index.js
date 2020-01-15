@@ -1,31 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { EventBus, defaultTagField, auth } from '../utils';
+import { EventBus, defaultPlace, auth, logout } from '../utils';
 import { Head, Nav, AuthForm, PlaceForm, PlacePicker, WantToGo, BeenThere } from '../components';
-
-const defaultPlace = {
-  name: '',
-  description: '',
-  img: '',
-  visited: 'No',
-  visitedDate: '',
-  tags: defaultTagField,
-};
 
 const Home = () => {
   const [isModalShown, setIsModalShown] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [placeToEdit, setPlaceToEdit] = useState(defaultPlace);
-  const [authed, setAuthed] = useState(false);
   const [authModalShown, setAuthModalShown] = useState(false);
+  const [authed, setAuthed] = useState(false);
+  const [placeToEdit, setPlaceToEdit] = useState(defaultPlace);
 
   useEffect(() => {
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        setAuthed(true);
-      } else {
-        setAuthed(false);
-      }
-    });
+    auth.onAuthStateChanged(user => setAuthed(!!user));
   }, []);
 
   const openModal = (place = defaultPlace) => {
@@ -39,36 +24,40 @@ const Home = () => {
     setIsModalShown(false);
   };
 
-  const addPlace = () => {
+  EventBus.on('addPlace', () => {
     if (authed) {
       setIsEditing(false);
       openModal();
     } else {
       setAuthModalShown(true);
     }
-  };
+  });
 
   EventBus.on('editPlace', place => {
     setIsEditing(true);
     openModal(place);
   });
 
+  EventBus.on('login', () => {
+    closeModal();
+    setAuthModalShown(true);
+  });
+
+  EventBus.on('closePlaceModal', () => closeModal());
+  EventBus.on('closeAuthModal', () => setAuthModalShown(false));
+  EventBus.on('logout', async () => await logout());
+
   return (
     <div>
       <Head title="Time to Have More Fun" />
 
-      <Nav addPlace={addPlace} />
+      <Nav authed={authed} />
 
       <div className="container mx-auto px-4 pt-20">
-        {authModalShown && <AuthForm closeModal={() => setAuthModalShown(false)} />}
+        {authModalShown && <AuthForm />}
 
         {isModalShown && (
-          <PlaceForm
-            closeModal={closeModal}
-            isEditing={isEditing}
-            placeToEdit={placeToEdit}
-            authed={authed}
-          />
+          <PlaceForm isEditing={isEditing} placeToEdit={placeToEdit} authed={authed} />
         )}
 
         <PlacePicker />

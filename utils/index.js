@@ -119,6 +119,15 @@ const defaultTagField = {
   flight: '',
 };
 
+const defaultPlace = {
+  name: '',
+  description: '',
+  img: '',
+  visited: 'No',
+  visitedDate: '',
+  tags: defaultTagField,
+};
+
 const getPlacesByTags = async tagsToQuery => {
   try {
     let query = db.collection('places').where('visited', '==', 'No');
@@ -147,17 +156,28 @@ const login = async ({ email, password }) => {
   }
 };
 
+const logout = async () => {
+  try {
+    await auth.signOut();
+  } catch (e) {
+    const { code, message } = e;
+    console.error('📣: logout -> error', code, message);
+  }
+};
+
 export {
   EventBus,
   db,
   auth,
+  login,
+  logout,
   snapshotToArray,
   defaultTags,
   defaultTagField,
+  defaultPlace,
   addPlace,
   deletePlace,
   getPlacesByTags,
   getUnvisitedPlaces,
   getVisitedPlaces,
-  login,
 };

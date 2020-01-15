@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { EventBus } from '../utils';
 
-const Nav = ({ addPlace }) => (
+const Nav = ({ authed }) => (
   <nav className="fixed flex items-center justify-between flex-wrap w-full py-4 px-6 bg-teal-500">
     <div className="flex items-center flex-shrink-0 text-white">
       <svg
@@ -23,11 +24,18 @@ const Nav = ({ addPlace }) => (
         />
       </svg>
 
-      <span className="text-xl font-medium tracking-tight">Time to Have More Fun</span>
+      <span className="text-xl font-semibold tracking-tight">Time to Have More Fun</span>
     </div>
-    <div className="">
+    <div>
+      {authed && (
+        <button
+          onClick={() => EventBus.emit('logout')}
+          className="inline-block px-4 py-3 mr-4 text-sm text-teal-200 hover:text-white focus:outline-none">
+          Logout
+        </button>
+      )}
       <button
-        onClick={addPlace}
+        onClick={() => EventBus.emit('addPlace')}
         className="inline-block px-4 py-3 border rounded text-white text-md leading-none border-white hover:border-transparent hover:text-teal-500 hover:bg-white focus:outline-none focus:bg-white focus:text-teal-500">
         Add Place
       </button>
@@ -36,7 +44,7 @@ const Nav = ({ addPlace }) => (
 );
 
 Nav.propTypes = {
-  addPlace: PropTypes.func.isRequired,
+  authed: PropTypes.bool.isRequired,
 };
 
 export default Nav;

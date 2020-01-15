@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { addPlace, deletePlace } from '../utils';
+import { addPlace, deletePlace, EventBus } from '../utils';
 import { TagCheckboxes } from '../components';
 
-const PlaceForm = ({ closeModal, isEditing, placeToEdit, authed }) => {
+const PlaceForm = ({ isEditing, placeToEdit, authed }) => {
   const [isErrorShown, setIsErrorShown] = useState(false);
   const [inputs, setInputs] = useState(placeToEdit);
 
@@ -31,6 +31,8 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit, authed }) => {
       return { ...inputs, tags };
     });
   };
+
+  const closeModal = () => EventBus.emit('closePlaceModal');
 
   const onSubmit = async e => {
     e.preventDefault();
@@ -202,7 +204,7 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit, authed }) => {
               </div>
             )}
 
-            {authed && (
+            {authed ? (
               <div className="flex justify-between mt-10">
                 {isEditing && (
                   <button
@@ -218,6 +220,12 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit, authed }) => {
                   {isEditing ? 'Save' : 'Add'}
                 </button>
               </div>
+            ) : (
+              <button
+                className="px-6 py-3 bg-teal-500 hover:bg-teal-400 focus:outline-none focus:bg-teal-400 rounded-lg text-white font-small tracking-wide"
+                onClick={() => EventBus.emit('login')}>
+                Sign in to edit
+              </button>
             )}
           </form>
         </div>
@@ -227,7 +235,6 @@ const PlaceForm = ({ closeModal, isEditing, placeToEdit, authed }) => {
 };
 
 PlaceForm.propTypes = {
-  closeModal: PropTypes.func.isRequired,
   isEditing: PropTypes.bool.isRequired,
   placeToEdit: PropTypes.object.isRequired,
   authed: PropTypes.bool.isRequired,

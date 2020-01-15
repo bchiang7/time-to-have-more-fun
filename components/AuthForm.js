@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { login } from '../utils';
+import { EventBus, login } from '../utils';
 
-const AuthForm = ({ closeModal }) => {
+const AuthForm = () => {
   const [isErrorShown, setIsErrorShown] = useState(false);
   const [inputs, setInputs] = useState({ email: '', password: '' });
 
@@ -17,12 +16,14 @@ const AuthForm = ({ closeModal }) => {
     });
   };
 
+  const closeModal = () => EventBus.emit('closeAuthModal');
+
   const onSubmit = async e => {
     e.preventDefault();
 
     try {
       await login(inputs);
-      // closeModal();
+      closeModal();
     } catch (e) {
       console.error('📣: AuthForm -> e', e);
       setIsErrorShown(true);
@@ -75,7 +76,7 @@ const AuthForm = ({ closeModal }) => {
               <button
                 className="inline-flex items-center px-4 py-2 rounded shadow bg-teal-500 hover:bg-teal-400 hover:shadow-lg focus:outline-none focus:bg-teal-400 text-white font-small tracking-wide"
                 type="submit">
-                Sign In
+                Login
               </button>
             </div>
           </form>
@@ -83,10 +84,6 @@ const AuthForm = ({ closeModal }) => {
       </div>
     </div>
   );
-};
-
-AuthForm.propTypes = {
-  closeModal: PropTypes.func.isRequired,
 };
 
 export default AuthForm;
